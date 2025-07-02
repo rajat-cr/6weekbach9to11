@@ -13,7 +13,7 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         
-        FormScreen screen = new FormScreen();
+        StudentTable screen = new StudentTable();
         screen.setVisible(true);
               
         
