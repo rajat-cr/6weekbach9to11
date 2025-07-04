@@ -4,6 +4,8 @@
  */
 package com.mycompany.weekbach9to11;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,6 +13,7 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class FormScreen extends javax.swing.JFrame {
+    SingletonClass single = SingletonClass.getInstance();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormScreen.class.getName());
 
@@ -37,8 +40,6 @@ public class FormScreen extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         userPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
-        resultName = new javax.swing.JLabel();
-        resultPassword = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,12 +72,6 @@ public class FormScreen extends javax.swing.JFrame {
             }
         });
 
-        resultName.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        resultName.setText("User Name");
-
-        resultPassword.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        resultPassword.setText("User Password");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -91,12 +86,10 @@ public class FormScreen extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(resultName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(userName)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(userPassword)
-                            .addComponent(resultPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(userPassword))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -114,11 +107,7 @@ public class FormScreen extends javax.swing.JFrame {
                 .addComponent(userPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(resultName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,11 +135,20 @@ public class FormScreen extends javax.swing.JFrame {
         }
         else{
             
-            resultName.setText(userName.getText());
-            resultPassword.setText(userPassword.getText());
+            String insertuser = "INSERT INTO registeredtable(email,password) VALUES(?,?)";
+            try{
+                PreparedStatement sp = single.connection.prepareCall(insertuser);
+                sp.setString(1, userName.getText());
+                sp.setString(2, userPassword.getText());
+                int insert = sp.executeUpdate();
+                if(insert > 0){
+                 JOptionPane.showMessageDialog(this, "Data Inserted");
+                }
+                
+            }catch(SQLException exception){
+                
+            }
             
-            userName.setText("");
-            userPassword.setText("");
             
             System.out.println("My name is: "+ userName.getText());
             System.out.println("My name is: "+ userPassword.getText());
@@ -185,7 +183,6 @@ public class FormScreen extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        int a = 10;
         java.awt.EventQueue.invokeLater(() -> new FormScreen().setVisible(true));
     }
 
@@ -195,8 +192,6 @@ public class FormScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel resultName;
-    private javax.swing.JLabel resultPassword;
     private javax.swing.JTextField userName;
     private javax.swing.JPasswordField userPassword;
     // End of variables declaration//GEN-END:variables

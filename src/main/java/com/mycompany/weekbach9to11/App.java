@@ -13,7 +13,9 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         
-        StudentTable screen = new StudentTable();
+        SingletonClass single = SingletonClass.getInstance();
+        
+        FormScreen screen = new FormScreen();
         screen.setVisible(true);
               
         
