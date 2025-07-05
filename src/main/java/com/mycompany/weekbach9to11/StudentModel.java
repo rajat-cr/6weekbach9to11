@@ -9,20 +9,21 @@ package com.mycompany.weekbach9to11;
  * @author ASUS
  */
 public class StudentModel {
-    private String name;
+    private int id;
     private String email;
     private String password;
     
     
-    StudentModel(String name, String email, String password){
-     this.name = name;
+    StudentModel(int id, String email, String password){
+        this.id = id;
      this.email = email;
      this.password = password;
     }
-    
-    String getName(){
-    return name;
+    int getId(){
+    return id;
     }
+   
+    
     String getEmail(){
     return email;
     }

@@ -5,6 +5,7 @@
 package com.mycompany.weekbach9to11;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -14,14 +15,41 @@ import javax.swing.JOptionPane;
  */
 public class FormScreen extends javax.swing.JFrame {
     SingletonClass single = SingletonClass.getInstance();
+    int selectedId = 0;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormScreen.class.getName());
 
     /**
      * Creates new form FormScreen
      */
-    public FormScreen() {
+    public FormScreen(int id) {
         initComponents();
+          this.selectedId = id;
+        if(id > 0){
+          
+        
+            
+            try{
+                   String singleData  = "SELECT * FROM registeredTable WHERE id=?";
+            PreparedStatement ps = single.connection.prepareCall(singleData);
+            ps.setInt(1, id);
+          //  ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+            String email = result.getString("email");
+              String password = result.getString("password");
+               userName.setText(email);
+              userPassword.setText(password);   
+            }
+                        
+            }catch(SQLException exce){
+                System.out.println("CHeck Exception: "+ exce);
+            }
+        
+        }
+        
+        
+        
     }
 
     /**
@@ -134,6 +162,33 @@ public class FormScreen extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(this, "Enter at least 6 digit password");
         }
         else{
+            if(selectedId > 0){
+               System.out.println("Update Data");
+                            //   String query = "UPDATE complaintTable SET name =?, contactNo =?, roomNo=?, problemType=? WHERE id=?";
+
+                    String update = "UPDATE  registeredTable SET email=?, password=?  WHERE id =?";
+                
+                 try{
+                PreparedStatement sp = single.connection.prepareCall(update);
+               
+                
+                sp.setString(1, userName.getText());
+                sp.setString(2, userPassword.getText());
+                 sp.setInt(3,selectedId);
+                int updateData = sp.executeUpdate();
+                if(updateData > 0){
+                 JOptionPane.showMessageDialog(this, "Data updateData");
+                 StudentTable table = new StudentTable();
+                 table.setVisible(true);
+                }
+                
+            }catch(SQLException exception){
+                                System.out.println("CHeck Exception: "+ exception);
+
+            }
+                
+            
+            }else{
             
             String insertuser = "INSERT INTO registeredtable(email,password) VALUES(?,?)";
             try{
@@ -143,16 +198,20 @@ public class FormScreen extends javax.swing.JFrame {
                 int insert = sp.executeUpdate();
                 if(insert > 0){
                  JOptionPane.showMessageDialog(this, "Data Inserted");
+                 StudentTable table = new StudentTable();
+                 table.setVisible(true);
                 }
                 
             }catch(SQLException exception){
-                
+                                System.out.println("CHeck Exception: "+ exception);
+
             }
             
             
             System.out.println("My name is: "+ userName.getText());
             System.out.println("My name is: "+ userPassword.getText());
         
+        }
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -183,7 +242,7 @@ public class FormScreen extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FormScreen().setVisible(true));
+      
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
