@@ -95,6 +95,11 @@ public class StudentTable extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        studentTable.setRowHeight(30);
+        studentTable.setSelectionBackground(new java.awt.Color(255, 102, 102));
+        studentTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        studentTable.setShowHorizontalLines(true);
+        studentTable.getTableHeader().setReorderingAllowed(false);
         studentTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 studentTableMouseClicked(evt);

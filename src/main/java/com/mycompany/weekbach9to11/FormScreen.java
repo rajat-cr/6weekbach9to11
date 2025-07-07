@@ -198,7 +198,7 @@ public class FormScreen extends javax.swing.JFrame {
                 int insert = sp.executeUpdate();
                 if(insert > 0){
                  JOptionPane.showMessageDialog(this, "Data Inserted");
-                 StudentTable table = new StudentTable();
+                 PracticeTable table = new PracticeTable();
                  table.setVisible(true);
                 }
                 
